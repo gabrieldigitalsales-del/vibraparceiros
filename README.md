@@ -1,22 +1,17 @@
-# Credenciamento de Parceiro — Vibra Soluções
+# Vibra — Credenciamento de Parceiro
 
-Projeto pronto para Vercel.
+Projeto Vite pronto para Vercel.
 
-## Deploy
-1. Suba **o conteúdo desta pasta na raiz do repositório**.
-2. No Vercel, importe o repositório.
-3. Framework Preset: **Other**.
-4. Root Directory: deixe vazio / raiz do projeto.
-5. Build Command: deixe vazio.
-6. Output Directory: deixe vazio.
-7. Faça o deploy.
+## Configuração recomendada no Vercel
+- Framework Preset: Vite
+- Root Directory: deixe em branco (raiz do repositório)
+- Build Command: `npm run build` (automático)
+- Output Directory: `dist` (automático)
+- Install Command: `npm install` (automático)
 
-O site abre mesmo sem configurar e-mail. Nesse caso, o formulário mostra uma mensagem amigável e mantém a opção de imprimir/salvar em PDF.
-
-## Para ativar o envio automático
-Configure em Settings > Environment Variables:
+## Variáveis de ambiente para envio por e-mail
 - `RESEND_API_KEY`
 - `CREDENCIAMENTO_TO_EMAIL`
 - `CREDENCIAMENTO_FROM_EMAIL`
 
-Depois faça Redeploy.
+Sem essas variáveis o site abre normalmente; apenas o envio automático fica indisponível.

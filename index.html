@@ -104,8 +104,6 @@
     .btn-primary{min-width:230px;color:#fff;background:linear-gradient(135deg,var(--navy),#0b68ba 58%,var(--blue));box-shadow:0 13px 28px rgba(7,25,77,.16)}
     .btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
     .status{display:none;margin-top:14px;padding:13px 14px;border-radius:13px;font-size:12px;font-weight:800}
-    .availability{display:none;margin:0 0 14px;padding:13px 14px;border-radius:13px;border:1px solid #cfe0ef;background:#f5f9fd;color:#536983;font-size:11px;line-height:1.55}
-    .availability.show{display:block}
     .status.show{display:block}.status.ok{background:#e9f8f2;color:#087055;border:1px solid #bce8d8}.status.err{background:#fff1f0;color:#a53832;border:1px solid #ffd1cf}
     .footer{text-align:center;margin-top:22px;color:#7c8ba0;font-size:10px}
 
@@ -227,7 +225,6 @@
           <div class="section-head">
             <div class="section-heading"><div class="section-icon"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg></div><div><h2>Finalizar credenciamento</h2><p class="section-sub">Revise os dados antes de concluir o envio.</p></div></div>
           </div>
-          <div id="availability" class="availability"></div>
           <div class="consent"><input type="checkbox" id="consent" required /><label for="consent">Declaro que as informações fornecidas são verdadeiras e autorizo a Vibra Soluções a utilizá-las para análise cadastral e processo de credenciamento.</label></div>
           <div id="status" class="status"></div>
           <div class="actions"><button type="button" class="btn btn-secondary" onclick="window.print()">Imprimir / salvar PDF</button><button id="submitBtn" type="submit" class="btn btn-primary">Enviar credenciamento</button></div>
@@ -267,30 +264,9 @@ const cnpjToggle=document.getElementById('hasCnpj');
 const sociosToggle=document.getElementById('hasSocios');
 const statusBox=document.getElementById('status');
 const submitBtn=document.getElementById('submitBtn');
-const availabilityBox=document.getElementById('availability');
-let emailConfigured=true;
 
 cnpjToggle.addEventListener('change',()=>document.getElementById('cnpjFields').classList.toggle('show',cnpjToggle.checked));
 sociosToggle.addEventListener('change',()=>document.getElementById('sociosFields').classList.toggle('show',sociosToggle.checked));
-
-
-async function checkEmailAvailability(){
-  try{
-    const res=await fetch('/api/status',{headers:{'Accept':'application/json'}});
-    if(!res.ok) return;
-    const info=await res.json();
-    emailConfigured=info.emailConfigured!==false;
-    if(!emailConfigured){
-      availabilityBox.className='availability show';
-      availabilityBox.textContent='O envio automático está temporariamente indisponível. Você pode preencher o formulário normalmente e usar “Imprimir / salvar PDF”.';
-      submitBtn.disabled=true;
-      submitBtn.textContent='Envio temporariamente indisponível';
-    }
-  }catch(_){
-    // Se a verificação falhar, mantém o formulário utilizável e tenta o envio normalmente.
-  }
-}
-checkEmailAvailability();
 
 function maskCPF(v){return v.replace(/\D/g,'').slice(0,11).replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2')}
 function maskCNPJ(v){return v.replace(/\D/g,'').slice(0,14).replace(/(\d{2})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1/$2').replace(/(\d{4})(\d{1,2})$/,'$1-$2')}
@@ -320,7 +296,6 @@ const fileToBase64=(file)=>new Promise((resolve,reject)=>{const r=new FileReader
 
 form.addEventListener('submit',async(e)=>{
   e.preventDefault();
-  if(!emailConfigured){statusBox.className='status show err';statusBox.textContent='O envio automático está temporariamente indisponível. Você pode salvar o formulário em PDF e tentar novamente mais tarde.';return}
   statusBox.className='status';statusBox.textContent='';
   if(!form.reportValidity()) return;
   const fd=new FormData(form);const data={};
@@ -333,15 +308,7 @@ form.addEventListener('submit',async(e)=>{
   try{
     const res=await fetch('/api/send-credenciamento',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({data,files})});
     const result=await res.json().catch(()=>({}));
-    if(!res.ok){
-      if(res.status===503 || result.code==='EMAIL_NOT_CONFIGURED'){
-        emailConfigured=false;
-        availabilityBox.className='availability show';
-        availabilityBox.textContent='O envio automático está temporariamente indisponível. Você pode preencher o formulário normalmente e usar “Imprimir / salvar PDF”.';
-        throw new Error('O envio automático está temporariamente indisponível. Tente novamente após a configuração do serviço de e-mail.');
-      }
-      throw new Error(result.error||'Não foi possível enviar o credenciamento.');
-    }
+    if(!res.ok) throw new Error(result.error||'Não foi possível enviar o credenciamento.');
     statusBox.className='status show ok';statusBox.textContent='Credenciamento enviado com sucesso para análise.';submitBtn.textContent='Enviado';
   }catch(err){statusBox.className='status show err';statusBox.textContent=err.message||'Erro ao enviar. Tente novamente.';submitBtn.disabled=false;submitBtn.textContent='Enviar credenciamento'}
 });
