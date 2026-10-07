@@ -1,23 +1,20 @@
-# Vibra Soluções — Programa de Parceiros Interativo
+# Programa de Parceiros Vibra Soluções
 
-Deck em React/Vite baseado no layout aprovado.
+Apresentação interativa em React/Vite pronta para Vercel.
 
-## Interações
-- Clique nas áreas que piscam para abrir detalhes.
-- Na tela dos 3 modelos, clique no card para ir direto ao modelo.
-- Arraste para a esquerda/direita no touch ou use as setas do teclado.
-- `M` abre o mapa de slides.
-- `F` ativa tela cheia.
-- `ESC` fecha painéis.
-- Botão superior `☰` abre navegação visual.
+## Deploy no Vercel
+1. Suba esta pasta para um repositório GitHub/GitLab/Bitbucket.
+2. Importe o repositório no Vercel.
+3. Framework Preset: **Vite**.
+4. Build Command: `npm run build`.
+5. Output Directory: `dist`.
 
-## Rodar
-```bash
-npm install
-npm run dev
-```
+## Navegação
+- Tela dos três modelos: cada card abre a apresentação correspondente.
+- Arraste/swipe ou use as setas do teclado para navegar.
+- `Esc` ou `Home` retorna à tela de modelos.
+- `F` ativa/desativa tela cheia.
+- Duplo clique ativa tela cheia.
+- A logo, durante uma rota, retorna à tela de modelos.
 
-## Build
-```bash
-npm run build
-```
+Nenhuma instrução de navegação aparece sobre os slides.
