@@ -3,7 +3,7 @@ export default async function handler(req, res) {
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.CREDENCIAMENTO_TO_EMAIL;
   const from = process.env.CREDENCIAMENTO_FROM_EMAIL;
-  if (!apiKey || !to || !from) return res.status(500).json({ error: 'Configuração de e-mail pendente no servidor.' });
+  if (!apiKey || !to || !from) return res.status(503).json({ code: 'EMAIL_NOT_CONFIGURED', error: 'O envio automático está temporariamente indisponível.' });
 
   try {
     const { data = {}, files = [] } = req.body || {};

@@ -1,18 +1,22 @@
-# Vibra Soluções — Credenciamento de Parceiro Premium
+# Credenciamento de Parceiro — Vibra Soluções
 
-Checklist premium responsivo com envio automático por e-mail via Resend, pronto para Vercel.
+Projeto pronto para Vercel.
 
-## Variáveis no Vercel
+## Deploy
+1. Suba **o conteúdo desta pasta na raiz do repositório**.
+2. No Vercel, importe o repositório.
+3. Framework Preset: **Other**.
+4. Root Directory: deixe vazio / raiz do projeto.
+5. Build Command: deixe vazio.
+6. Output Directory: deixe vazio.
+7. Faça o deploy.
 
+O site abre mesmo sem configurar e-mail. Nesse caso, o formulário mostra uma mensagem amigável e mantém a opção de imprimir/salvar em PDF.
+
+## Para ativar o envio automático
+Configure em Settings > Environment Variables:
 - `RESEND_API_KEY`
 - `CREDENCIAMENTO_TO_EMAIL`
 - `CREDENCIAMENTO_FROM_EMAIL`
 
-O destinatário pode ser alterado posteriormente modificando apenas `CREDENCIAMENTO_TO_EMAIL` no painel do Vercel.
-
-## Arquivos
-
-- `index.html` — formulário premium
-- `public/vibra-logo.png` — logo oficial
-- `api/send-credenciamento.js` — função serverless de envio
-- `vercel.json` — configuração do Vercel
+Depois faça Redeploy.
