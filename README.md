@@ -1,17 +1,15 @@
-# Vibra — Credenciamento de Parceiro
+# Credenciamento de Parceiro — Vibra Soluções
 
-Projeto Vite pronto para Vercel.
+Versão Vite pronta para Vercel.
 
-## Configuração recomendada no Vercel
+## Deploy
 - Framework Preset: Vite
-- Root Directory: deixe em branco (raiz do repositório)
-- Build Command: `npm run build` (automático)
-- Output Directory: `dist` (automático)
-- Install Command: `npm install` (automático)
+- Build Command: npm run build
+- Output Directory: dist
+- Install Command: npm install
 
-## Variáveis de ambiente para envio por e-mail
-- `RESEND_API_KEY`
-- `CREDENCIAMENTO_TO_EMAIL`
-- `CREDENCIAMENTO_FROM_EMAIL`
+Não precisa de variáveis de ambiente ou API de e-mail.
 
-Sem essas variáveis o site abre normalmente; apenas o envio automático fica indisponível.
+Ao enviar, o formulário abre o WhatsApp para `55 31 9019-7810` com os dados organizados na mensagem.
+
+Observação: navegadores não conseguem anexar automaticamente arquivos locais ao WhatsApp. Os documentos selecionados são listados na mensagem para que o parceiro os anexe manualmente na conversa.
